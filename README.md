@@ -18,7 +18,7 @@ that reproduce the reported numbers and figures.
 
 The measurement dataset is published separately on Zenodo (CC BY 4.0):
 
-> DOI: [10.5281/zenodo.20541725](https://doi.org/10.5281/zenodo.20541725)
+> DOI: [10.5281/zenodo.20541724](https://doi.org/10.5281/zenodo.20541724)
 
 It contains the noise spectra of 75 device configurations (38 physical devices
 in various operating states) plus one empty-grid baseline, recorded over a live
