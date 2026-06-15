@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this code or dataset, please cite both the article and the Zenodo dataset record."
+title: "PLC Device Detection — analysis and reproduction code"
+type: software
+authors:
+  - family-names: Musil
+    given-names: Petr
+    orcid: "https://orcid.org/0000-0003-4068-8447"
+  - family-names: Macho
+    given-names: Radim
+  - family-names: Mlýnek
+    given-names: Petr
+  - family-names: Mišurec
+    given-names: Jiří
+license: MIT
+references:
+  - type: article
+    title: "Power Line Communication as a Sensor: Machine Learning-Based Spectral Fingerprinting for Non-Invasive Device Detection"
+    authors:
+      - family-names: Musil
+        given-names: Petr
+      - family-names: Macho
+        given-names: Radim
+      - family-names: Mlýnek
+        given-names: Petr
+      - family-names: Mišurec
+        given-names: Jiří
+    journal: "IEEE Open Journal of the Communications Society"
+    year: 2026
+  - type: data
+    title: "Dataset of \"Power Line Communication as a Sensor: Machine Learning-Based Spectral Fingerprinting for Non-Invasive Device Detection\""
+    doi: "10.5281/zenodo.20541725"
+    year: 2026

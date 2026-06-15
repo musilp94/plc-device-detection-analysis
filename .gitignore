@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Dataset (download from Zenodo, see README)
+dataset/
+
+# Generated intermediates
+analysis/cache/
+analysis/results/*.npz
+analysis/results/_progress.log
+analysis/results/_DONE.txt
+catboost_info/
+
+# Generated figures
+figures/*.pdf
