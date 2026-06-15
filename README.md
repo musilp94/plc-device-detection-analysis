@@ -1,11 +1,11 @@
 # PLC Device Detection — analysis and reproduction code
 
-Analysis code accompanying the paper:
+Analysis code accompanying a manuscript currently under review:
 
 > **Power Line Communication as a Sensor: Machine Learning-Based Spectral
 > Fingerprinting for Non-Invasive Device Detection**
 > P. Musil, R. Macho, P. Mlýnek, J. Mišurec.
-> IEEE Open Journal of the Communications Society.
+> IEEE Open Journal of the Communications Society (under review; not yet published).
 
 The study investigates whether the noise spectrum a broadband power line
 communication (BB-PLC) modem already measures as part of its normal channel
@@ -93,4 +93,4 @@ Code: MIT (see `LICENSE`). Dataset: CC BY 4.0 (see the Zenodo record).
 
 ## Citation
 
-See `CITATION.cff`. Please cite both the article and the Zenodo dataset record.
+See `CITATION.cff`. Please cite the Zenodo dataset record; the associated article is under review and will be added once it is published.

@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this code or dataset, please cite both the article and the Zenodo dataset record."
+message: "If you use this code or dataset, please cite the Zenodo dataset record (DOI below). The associated article is under review and will be added once it is published."
 title: "PLC Device Detection — analysis and reproduction code"
 type: software
 authors:
@@ -14,20 +14,11 @@ authors:
     given-names: Jiří
 license: MIT
 references:
-  - type: article
-    title: "Power Line Communication as a Sensor: Machine Learning-Based Spectral Fingerprinting for Non-Invasive Device Detection"
-    authors:
-      - family-names: Musil
-        given-names: Petr
-      - family-names: Macho
-        given-names: Radim
-      - family-names: Mlýnek
-        given-names: Petr
-      - family-names: Mišurec
-        given-names: Jiří
-    journal: "IEEE Open Journal of the Communications Society"
-    year: 2026
   - type: data
     title: "Dataset of \"Power Line Communication as a Sensor: Machine Learning-Based Spectral Fingerprinting for Non-Invasive Device Detection\""
     doi: "10.5281/zenodo.20541724"
     year: 2026
+
+# The associated article (P. Musil, R. Macho, P. Mlýnek, J. Mišurec) is under
+# review at the IEEE Open Journal of the Communications Society and is not yet
+# published; its citation will be added here once it appears.
