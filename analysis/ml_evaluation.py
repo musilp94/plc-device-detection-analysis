@@ -7,10 +7,10 @@ a full comparative study:
 
 Tasks        : per-device (76 classes incl. empty grid) ; per-category (5)
 Feature sets : raw spectrum  vs  baseline-normalized (device − empty grid)
-Models       : Dummy, LogReg, LinearSVC, SVM-RBF*, RandomForest, HistGB,
-               CatBoost, LightGBM, MLP            (*category task only)
+Models       : Dummy, LogReg, SVM-RBF, RandomForest, HistGB*,
+               CatBoost*, LightGBM, MLP           (*category task only)
 Protocols    :
-  A  topology-matched : RepeatedStratifiedKFold(5×2) over pooled topologies
+  A  topology-matched : stratified 5-fold CV over pooled topologies
                         (optimistic — deployment topology seen in training)
   B  leave-one-topology-out : train on 2 topologies, test on the 3rd, rotate
                         (honest cold-deployment generalization)
@@ -34,7 +34,7 @@ from scipy import stats as sstats
 
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC, LinearSVC
+from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier, HistGradientBoostingClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import make_pipeline
@@ -85,11 +85,11 @@ def get_models(task: str, n_jobs: int = -1) -> dict:
         "MLP": scaler(MLPClassifier(hidden_layer_sizes=(256, 128), max_iter=400,
                                     random_state=RANDOM_STATE, early_stopping=True)),
     }
-    # CatBoost, HistGB and RBF-SVM are fast for the 5-class category task but
-    # prohibitive at 76 classes on CPU (one tree per class per boosting round;
-    # OvO blow-up for SVM). LightGBM is the gradient-boosting representative for
-    # the per-device task; the category task additionally includes CatBoost
-    # (used in the original work), HistGradientBoosting and an RBF SVM.
+    # CatBoost and HistGB are evaluated on the 5-class category task only:
+    # one tree per class per boosting round makes them slow at 76 classes on
+    # CPU, and LightGBM already represents gradient boosting on the per-device
+    # task. The RBF SVM is evaluated on both tasks (a 76-class fit takes only
+    # a few seconds despite the one-vs-one expansion).
     if task == "category":
         models["CatBoost"] = CatBoostClassifier(iterations=300, depth=6,
                                                 learning_rate=0.1, verbose=0,
@@ -97,7 +97,7 @@ def get_models(task: str, n_jobs: int = -1) -> dict:
                                                 thread_count=-1)
         models["HistGradientBoosting"] = HistGradientBoostingClassifier(
             max_iter=300, random_state=RANDOM_STATE)
-        models["SVM (RBF)"] = scaler(SVC(kernel="rbf", C=10, gamma="scale"))
+    models["SVM (RBF)"] = scaler(SVC(kernel="rbf", C=10, gamma="scale"))
     return models
 
 
@@ -135,7 +135,7 @@ def stamp(msg: str) -> None:
 
 # --------------------------------------------------------------------------
 def protocol_A(model_factory, X, y, n_splits=5, n_repeats=1) -> list[dict]:
-    """Topology-matched repeated stratified CV."""
+    """Topology-matched stratified 5-fold CV."""
     rskf = RepeatedStratifiedKFold(n_splits=n_splits, n_repeats=n_repeats,
                                    random_state=RANDOM_STATE)
     per_fold = []

@@ -1,0 +1,39 @@
+device_group_id,device,category,n,recall
+1,table lamp,light_source,60,1.0
+2,light bulb,light_source,120,1.0
+3,LED light bulb 1,light_source,120,1.0
+4,LED light bulb 2,light_source,120,0.9583333333333334
+5,LED light bulb 3,light_source,120,0.9916666666666667
+6,fluorescent light bulb 1,light_source,120,0.9416666666666667
+7,fluorescent light bulb 2,light_source,120,1.0
+8,LED stripe,smps,240,0.04583333333333333
+9,power adapter,smps,120,0.2833333333333333
+10,ventilator,motor,300,0.27666666666666667
+11,coffee grinder 1,motor,120,0.7916666666666666
+12,coffee grinder 2,motor,120,0.9416666666666667
+13,coffee grinder 3,motor,120,0.9916666666666667
+14,mixer,motor,120,0.7
+15,Wi-Fi router,smps,120,0.075
+16,LED lighting 1,light_source,60,0.0
+17,LED lighting 2,light_source,60,0.08333333333333333
+18,fluorescent table lamp,light_source,120,0.05
+19,LED table lamp,light_source,120,0.008333333333333333
+20,melting gun,other,60,0.0
+21,uninterruptible power supply unit,ups,120,0.0
+22,assured power supply unit,ups,60,0.0
+23,ozone generator,smps,120,0.85
+24,Power Quality monitor,smps,60,0.9333333333333333
+25,computer monitor 1,smps,240,0.32083333333333336
+26,computer monitor 2,smps,240,0.7708333333333334
+27,personal computer 1,smps,120,0.7083333333333334
+28,personal computer 2,smps,120,0.8916666666666667
+29,speakers,other,120,0.0
+30,hot air gun,motor,120,0.35
+31,hairdryer,motor,120,0.9166666666666666
+32,drill,motor,120,0.19166666666666668
+33,electricity meter 1,smps,60,0.36666666666666664
+34,electricity meter 2,smps,60,0.25
+35,electricity meter 3,smps,60,0.6166666666666667
+36,switch,smps,60,0.6166666666666667
+37,laboratory power supply,smps,120,0.375
+38,oscilloscope,smps,120,0.9833333333333333

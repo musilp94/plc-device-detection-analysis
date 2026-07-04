@@ -38,6 +38,25 @@ _Dataset: Zenodo v1; model: LightGBM; seed 13. Generated automatically._
 - Of cold-LOTO device misclassifications, 28% land in the CORRECT category.
   → the model captures device *type* far better than device *identity* even when topology is unseen.
 
+## Test 5 — Leave-one-physical-device-out: category of a never-seen device
+
+- Category accuracy on never-seen devices (LOPDO): **0.531** (balanced: 0.355); topology-matched reference with known devices is ~0.99
+- Mean per-device recall by category:
+    - light_source: 0.64  (11 physical devices)
+    - motor: 0.65  (8 physical devices)
+    - other: 0.00  (2 physical devices)
+    - smps: 0.54  (15 physical devices)
+    - ups: 0.00  (2 physical devices)
+
+  Interpretation: types with several distinct exemplars in the data generalize partially; categories represented by only two physical devices do not generalize at all — the category fingerprint is partly device-specific, and the topology-matched per-category accuracy should be read as performance over a *known* device inventory.
+
+## Test 6 — Installation (topology) separability from the readout
+
+- Topology (3-class) predicted from the 232-D features, all samples: **0.991** (stratified 5-fold CV)
+- Topology predicted from the empty-grid measurements alone: **0.967**
+
+  Interpretation: the installation is (all but) perfectly identifiable from the readout itself — the three iterations are as separable in the feature space as the devices are, i.e. they realize genuinely distinct channels, and this covariate shift is what a pre-trained classifier meets in an unseen installation.
+
 ## Verdict — usability and conditions
 
 See the per-test interpretations above. Key conditions for reliable use are summarized in the manuscript revision. Raw numbers in audit_*.csv.

@@ -15,6 +15,10 @@ Tests
        (re-derives the empty-grid reference from TRAIN topologies only)
   4. Error structure: fraction of cold-LOTO device errors that stay within the
        correct category (does the model at least capture device *type*?)
+  5. Leave-one-physical-device-out: can the category classifier recognize the
+       load *type* of a device it never saw during training?
+  6. Installation (topology) separability: how well is the topology label
+       itself predictable from the readout?  -> quantifies the covariate shift
 
 Outputs:
   analysis/results/critical_audit.md     human-readable verdict + numbers
@@ -269,6 +273,83 @@ def test4_error_structure(df_raw):
 
 
 # ---------------------------------------------------------------------------
+def test5_lopdo_category(df_raw):
+    say("## Test 5 — Leave-one-physical-device-out: category of a never-seen device\n")
+    cols = feat_cols(df_raw)
+    X = df_raw[cols].to_numpy()
+    cat = df_raw["category"].fillna("other").replace("electronics", "other").to_numpy()
+    grp = df_raw["device_group_id"].to_numpy()
+    name = df_raw.groupby("device_group_id")["device"].first()
+    phys = np.array(sorted(g for g in np.unique(grp) if g != 0))
+
+    yt, yp, rows = [], [], []
+    for g in phys:
+        te = grp == g
+        tr = ~te                     # empty grid always stays in training
+        m = lgbm().fit(X[tr], cat[tr])
+        pred = m.predict(X[te])
+        yt.append(cat[te]); yp.append(pred)
+        rows.append({"device_group_id": int(g), "device": name[g],
+                     "category": cat[te][0], "n": int(te.sum()),
+                     "recall": float((pred == cat[te]).mean())})
+    yt = np.concatenate(yt); yp = np.concatenate(yp)
+    acc = accuracy_score(yt, yp)
+    bal = balanced_accuracy_score(yt, yp)
+    tab = pd.DataFrame(rows)
+    tab.to_csv(RESULTS / "audit_lopdo_category.csv", index=False)
+
+    say(f"- Category accuracy on never-seen devices (LOPDO): **{acc:.3f}** "
+        f"(balanced: {bal:.3f}); topology-matched reference with known "
+        f"devices is ~0.99")
+    per = tab.groupby("category")["recall"].agg(["mean", "count"])
+    say(f"- Mean per-device recall by category:")
+    for c, r in per.iterrows():
+        say(f"    - {c}: {r['mean']:.2f}  ({int(r['count'])} physical devices)")
+    say("\n  Interpretation: types with several distinct exemplars in the data "
+        "generalize partially; categories represented by only two physical "
+        "devices do not generalize at all — the category fingerprint is partly "
+        "device-specific, and the topology-matched per-category accuracy should "
+        "be read as performance over a *known* device inventory.\n")
+    return {"lopdo_acc": float(acc), "lopdo_balacc": float(bal),
+            "per_category_recall": {c: float(r["mean"]) for c, r in per.iterrows()}}
+
+
+# ---------------------------------------------------------------------------
+def test6_topology_separability(df_raw):
+    say("## Test 6 — Installation (topology) separability from the readout\n")
+    cols = feat_cols(df_raw)
+    X = df_raw[cols].to_numpy()
+    topo = df_raw["topology"].to_numpy()
+    grp = df_raw["device_group_id"].to_numpy()
+
+    skf = StratifiedKFold(5, shuffle=True, random_state=SEED)
+    accs = []
+    for a, b in skf.split(X, topo):
+        m = lgbm().fit(X[a], topo[a])
+        accs.append(accuracy_score(topo[b], m.predict(X[b])))
+    acc_all = float(np.mean(accs))
+
+    eg = grp == 0                    # empty-grid measurements only
+    Xe, te = X[eg], topo[eg]
+    accs_eg = []
+    for a, b in StratifiedKFold(5, shuffle=True, random_state=SEED).split(Xe, te):
+        m = lgbm().fit(Xe[a], te[a])
+        accs_eg.append(accuracy_score(te[b], m.predict(Xe[b])))
+    acc_eg = float(np.mean(accs_eg))
+
+    say(f"- Topology (3-class) predicted from the 232-D features, all samples: "
+        f"**{acc_all:.3f}** (stratified 5-fold CV)")
+    say(f"- Topology predicted from the empty-grid measurements alone: "
+        f"**{acc_eg:.3f}**")
+    say("\n  Interpretation: the installation is (all but) perfectly "
+        "identifiable from the readout itself — the three iterations are as "
+        "separable in the feature space as the devices are, i.e. they realize "
+        "genuinely distinct channels, and this covariate shift is what a "
+        "pre-trained classifier meets in an unseen installation.\n")
+    return {"topo_acc_all": acc_all, "topo_acc_emptygrid": acc_eg}
+
+
+# ---------------------------------------------------------------------------
 def main():
     say("# Critical, independent audit of the PLC device-detection method")
     say(f"_Dataset: Zenodo v1; model: LightGBM; seed {SEED}. "
@@ -279,7 +360,9 @@ def main():
     for fn, arg in [(test1_pseudo_replication, df_raw),
                     (test2_what_generalizes, df_raw),
                     (test3_foldsafe_norm, None),
-                    (test4_error_structure, df_raw)]:
+                    (test4_error_structure, df_raw),
+                    (test5_lopdo_category, df_raw),
+                    (test6_topology_separability, df_raw)]:
         try:
             out[fn.__name__] = fn(arg) if arg is not None else fn()
         except Exception as e:
