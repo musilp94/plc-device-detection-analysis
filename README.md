@@ -13,7 +13,8 @@ communication (BB-PLC) modem already measures as part of its normal channel
 estimation can be used to fingerprint and identify the electrical devices
 connected nearby. This repository contains the feature extraction, model
 evaluation, independent audit, anomaly detection and figure-generation scripts
-that reproduce the reported numbers and figures.
+that reproduce the reported dataset-derived numbers and figures in the
+submitted article.
 
 ## Dataset
 
@@ -61,14 +62,40 @@ python analysis/cnn_eval.py          # -> appends the 1D-CNN rows to model_compa
 python analysis/critical_audit.py    # -> analysis/results/critical_audit.md, audit_*.csv, figures/audit_*.pdf
 python analysis/anomaly_detection.py # -> analysis/results/anomaly_*.csv, figures/anomaly_detection.pdf
 python analysis/make_figures.py      # -> figures/*.pdf
+python analysis/confusion_fig.py     # -> figures/confusion_category.pdf
 python analysis/gen_device_table.py  # -> analysis/results/tab_device_spectral.tex
 ```
 
 `analysis/check_data.py` verifies that the archive matches `metadata.csv` and
 that the loader works end-to-end.
 
-Pre-computed result tables are provided under `analysis/results/` so the figures
-can be regenerated without rerunning the full evaluation.
+Pre-computed result files are provided under `analysis/results/` so the main
+tables and confusion figures can be checked without rerunning the full model
+evaluation:
+
+- `model_comparison.csv`: all classification metrics, confidence intervals and
+  macro/balanced scores used in the manuscript tables.
+- `feature_importance.csv`: band-level importance source for
+  `ml_band_importance.pdf`.
+- `audit_*.csv` and `critical_audit.md`: the critical-analysis outputs used in
+  Section VI.
+- `anomaly_*.csv`: unauthorized-device detection metrics.
+- `predictions_category.npz`: out-of-fold LightGBM predictions used for the
+  manuscript category-confusion figure.
+- `predictions_device.npz`: out-of-fold LightGBM predictions used for the
+  supplemental full 76-class per-device confusion matrices mentioned in the
+  manuscript.
+- `tab_device_spectral.tex`: the full per-device spectral-characterization
+  table accompanying the shorter representative table in the manuscript.
+
+The scripts regenerate the dataset-derived manuscript figures:
+`div_accuracy.pdf`, `spectra_archetypes.pdf`, `feature_embedding.pdf`,
+`confusion_category.pdf`, `channel_coloring.pdf`, `ml_norm_ablation.pdf`,
+`strong_devices.pdf`, `audit_recall_vs_strength.pdf`,
+`ml_band_importance.pdf`, and `anomaly_detection.pdf`. The measurement
+validation figures and the preliminary 24-hour office example use separate
+non-release source files and are intentionally not part of this analysis
+repository.
 
 ## Layout
 
@@ -80,7 +107,8 @@ analysis/            evaluation and figure scripts
   cnn_eval.py          1D-CNN baseline
   critical_audit.py    independent audit (leakage, generalization, error structure)
   anomaly_detection.py per-installation unauthorized-device detection
-  make_figures.py      publication figures
+  make_figures.py      dataset-derived manuscript and supplemental figures
+  confusion_fig.py     manuscript category-confusion figure
   gen_device_table.py  per-device spectral characterization table
   figstyle.py          shared figure style
   check_data.py        dataset integrity check

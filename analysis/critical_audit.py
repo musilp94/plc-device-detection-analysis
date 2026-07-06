@@ -2,7 +2,7 @@
 INDEPENDENT, SKEPTICAL AUDIT of the PLC device-detection approach.
 =================================================================
 Goal: actively hunt for systematic errors and determine *under what conditions*
-the method is reliable — WITHOUT assuming the original paper's conclusions.
+the method is reliable, without assuming the submitted manuscript's conclusions.
 
 Tests
   1. Pseudo-replication / temporal leakage
@@ -371,7 +371,7 @@ def main():
     # synthesized verdict
     say("## Verdict — usability and conditions\n")
     say("See the per-test interpretations above. Key conditions for reliable use "
-        "are summarized in the manuscript revision. Raw numbers in audit_*.csv.\n")
+        "are summarized in the submitted manuscript. Raw numbers in audit_*.csv.\n")
 
     (RESULTS / "critical_audit.md").write_text("\n".join(report), encoding="utf-8")
     print(f"\nWrote {RESULTS/'critical_audit.md'}")

@@ -9,6 +9,8 @@ dataset/
 # Generated intermediates
 analysis/cache/
 analysis/results/*.npz
+!analysis/results/predictions_category.npz
+!analysis/results/predictions_device.npz
 analysis/results/_progress.log
 analysis/results/_DONE.txt
 catboost_info/

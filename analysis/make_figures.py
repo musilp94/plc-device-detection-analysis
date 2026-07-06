@@ -1,10 +1,12 @@
 """
-Publication figures from evaluation results.
+Dataset-derived manuscript figures from evaluation results.
 Reads analysis/results/* and analysis/cache/* and writes PDF figures into
 figures/. All figures share analysis/figstyle.py (Times font, unified palette,
 no in-figure titles -- captions carry the description).
 
-Only figures derived from the published Zenodo dataset are included here.
+Only figures derived from the published Zenodo dataset are included here. The
+measurement-validation and 24-hour office figures in the manuscript use
+separate non-release source files and are intentionally outside this repository.
 """
 from __future__ import annotations
 
@@ -59,30 +61,6 @@ def _vector_colorbar(fig, axes, cmap, norm, label, ticks=None, width=0.018, pad=
     return cax
 
 
-def fig_model_comparison():
-    df = pd.read_csv(RESULTS / "model_comparison.csv")
-    for task in ["device", "category"]:
-        sub = df[(df.task == task) & (df.featset == "norm")]
-        models = sub["model"].unique()
-        A = sub[sub.protocol.str.startswith("A")].set_index("model")["accuracy_mean"]
-        B = sub[sub.protocol.str.startswith("B")].set_index("model")["accuracy_mean"]
-        Aci = sub[sub.protocol.str.startswith("A")].set_index("model")["accuracy_ci95"]
-        order = A.reindex(models).sort_values(ascending=True).index
-        y = np.arange(len(order))
-        fig, ax = plt.subplots(figsize=(6.5, 0.4 * len(order) + 0.8))
-        ax.barh(y - 0.2, A.reindex(order), height=0.4, xerr=Aci.reindex(order),
-                label="Topology-matched CV", color=P.PRIMARY,
-                error_kw=dict(ecolor="#333333", lw=0.8))
-        ax.barh(y + 0.2, B.reindex(order), height=0.4,
-                label="Leave-one-topology-out", color=P.ACCENT)
-        ax.set_yticks(y); ax.set_yticklabels(order)
-        ax.set_xlabel("Accuracy"); ax.set_xlim(0, 1)
-        ax.legend(loc="lower right"); ax.grid(axis="x")
-        fig.tight_layout(); fig.savefig(FIGS / f"ml_model_comparison_{task}.pdf")
-        plt.close(fig)
-        print(f"  ml_model_comparison_{task}.pdf")
-
-
 def fig_norm_ablation():
     df = pd.read_csv(RESULTS / "model_comparison.csv")
     primary = "Random Forest"
@@ -109,14 +87,15 @@ def fig_norm_ablation():
     print("  ml_norm_ablation.pdf")
 
 
-def fig_confusion(task: str):
-    d = np.load(RESULTS / f"predictions_{task}.npz", allow_pickle=True)
+def fig_device_confusion_supplement():
+    """Full 76x76 per-device confusion matrices mentioned in the manuscript."""
+    d = np.load(RESULTS / "predictions_device.npz", allow_pickle=True)
     for proto in ["A", "B"]:
         yt, yp = d[f"y_true_{proto}"], d[f"y_pred_{proto}"]
         labels = np.unique(np.concatenate([yt, yp]))
         cm = confusion_matrix(yt, yp, labels=labels)
         cmn = cm / cm.sum(axis=1, keepdims=True).clip(min=1)
-        fig, ax = plt.subplots(figsize=(7, 6) if task == "device" else (5, 4.2))
+        fig, ax = plt.subplots(figsize=(7, 6))
         norm = matplotlib.colors.Normalize(vmin=0, vmax=1)
         x = np.arange(len(labels) + 1)
         y = np.arange(len(labels) + 1)
@@ -125,19 +104,14 @@ def fig_confusion(task: str):
         ax.set_xlim(0, len(labels)); ax.set_ylim(len(labels), 0)
         ax.set_xlabel("Predicted label"); ax.set_ylabel("True label")
         ax.grid(False)
-        if task == "category":
-            ax.set_xticks(np.arange(len(labels)) + 0.5); ax.set_xticklabels(labels, rotation=45, ha="right")
-            ax.set_yticks(np.arange(len(labels)) + 0.5); ax.set_yticklabels(labels)
-            for i in range(len(labels)):
-                for j in range(len(labels)):
-                    ax.text(j + 0.5, i + 0.5, int(cm[i, j]), ha="center", va="center", fontsize=8,
-                            color="white" if cmn[i, j] < 0.5 else "black")
-        else:
-            ax.set_xticks([]); ax.set_yticks([])
+        ax.set_xticks([]); ax.set_yticks([])
+        title = "topology-matched" if proto == "A" else "leave-one-topology-out"
+        ax.set_title(f"Per-device confusion ({title})", fontsize=9)
         fig.tight_layout(rect=[0, 0, 0.90, 1])
         _vector_colorbar(fig, ax, P.SEQ_CMAP, norm, "Row-normalized fraction")
-        fig.savefig(FIGS / f"ml_cm_{task}_{proto}.pdf"); plt.close(fig)
-        print(f"  ml_cm_{task}_{proto}.pdf")
+        name = "device_confusion_topology_matched.pdf" if proto == "A" else "device_confusion_loto.pdf"
+        fig.savefig(FIGS / name); plt.close(fig)
+        print(f"  {name}")
 
 
 def fig_spectra_archetypes():
@@ -297,13 +271,11 @@ if __name__ == "__main__":
     print("Generating figures into figures/ ...")
     fig_spectra_archetypes()
     fig_strong_devices()
-    fig_model_comparison()
     fig_norm_ablation()
-    for t in ["device", "category"]:
-        fig_confusion(t)
     fig_band_importance()
     fig_div_accuracy()
     fig_feature_embedding()
     fig_channel_coloring()
     fig_recall_vs_strength()
+    fig_device_confusion_supplement()
     print("done.")

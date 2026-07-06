@@ -59,4 +59,4 @@ _Dataset: Zenodo v1; model: LightGBM; seed 13. Generated automatically._
 
 ## Verdict — usability and conditions
 
-See the per-test interpretations above. Key conditions for reliable use are summarized in the manuscript revision. Raw numbers in audit_*.csv.
+See the per-test interpretations above. Key conditions for reliable use are summarized in the submitted manuscript. Raw numbers in audit_*.csv.
