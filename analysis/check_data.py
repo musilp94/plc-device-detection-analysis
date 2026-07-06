@@ -12,7 +12,7 @@ sys.path.insert(0, str(DATASET_DIR))
 from load_dataset import Dataset, ROOT_FOLDER  # noqa: E402
 
 # Canonical dataset = the version published on Zenodo (dataset/v1).
-ZIP = DATASET_DIR / "v1" / "VZ6_039_021_VUT_D_v1.zip"
+ZIP = DATASET_DIR / "v1" / "VZ6_039_021_VUT_D_0000_v1.zip"
 
 meta = pd.read_csv(DATASET_DIR / "metadata.csv", index_col="id")
 

@@ -2,7 +2,7 @@
 Feature extraction for the PLC device-detection dataset (Zenodo v1).
 ===================================================================
 
-Reads the published dataset ZIP (dataset/v1/VZ6_039_021_VUT_D_v1.zip)
+Reads the published dataset ZIP (dataset/v1/VZ6_039_021_VUT_D_0000_v1.zip)
 once, interpolates every noise spectrum onto a common frequency grid, and
 produces two cached feature matrices:
 
@@ -45,7 +45,7 @@ from scipy import stats
 # --------------------------------------------------------------------------
 REPO = Path(__file__).resolve().parent.parent
 DATASET_DIR = REPO / "dataset"
-ZIP_PATH = DATASET_DIR / "v1" / "VZ6_039_021_VUT_D_v1.zip"
+ZIP_PATH = DATASET_DIR / "v1" / "VZ6_039_021_VUT_D_0000_v1.zip"
 META_PATH = DATASET_DIR / "metadata.csv"
 OUT_DIR = REPO / "analysis" / "cache"
 
