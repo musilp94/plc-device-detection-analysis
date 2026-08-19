@@ -1,12 +1,14 @@
 # PLC Device Detection — analysis and reproduction code
 
-Analysis code accompanying the submitted manuscript:
+Analysis and reproduction code for the public Version 1 device/state study that
+accompanied the historical manuscript submission:
 
 > **Power Line Communication as a Sensor: Machine Learning-Based Spectral
 > Fingerprinting for Non-Invasive Device Detection**
 > P. Musil, R. Macho, P. Mlýnek, J. Mišurec.
-> IEEE Open Journal of the Communications Society (submitted on 2026-07-06;
-> under review; not yet published).
+> Submitted to IEEE Open Journal of the Communications Society on 2026-07-06;
+> the submission was not accepted and the article remains unpublished. An
+> extended measurement study is planned before any resubmission.
 
 The study investigates whether the noise spectrum a broadband power line
 communication (BB-PLC) modem already measures as part of its normal channel
@@ -14,13 +16,16 @@ estimation can be used to fingerprint and identify the electrical devices
 connected nearby. This repository contains the feature extraction, model
 evaluation, independent audit, anomaly detection and figure-generation scripts
 that reproduce the reported dataset-derived numbers and figures in the
-submitted article.
+historically submitted article. The repository does not derive authority from
+that submission status.
 
 ## Dataset
 
 The measurement dataset is published separately on Zenodo (CC BY 4.0):
 
-> DOI: [10.5281/zenodo.20541724](https://doi.org/10.5281/zenodo.20541724)
+> Version 1 DOI: [10.5281/zenodo.20541725](https://doi.org/10.5281/zenodo.20541725)
+>
+> All-versions concept DOI: [10.5281/zenodo.20541724](https://doi.org/10.5281/zenodo.20541724)
 
 It contains the noise spectra of 75 device configurations (38 physical devices
 in various operating states) plus one empty-grid baseline, recorded over a live
@@ -116,6 +121,20 @@ analysis/            evaluation and figure scripts
 figures/             generated figures (created on demand)
 ```
 
+## Repository role and interpretation boundary
+
+This repository is the reproduction authority for the released Version 1
+dataset and its reported estimands. It is not the source of truth for the later
+PC, adapter, router, channel-sounding or measurement-chain campaigns; those are
+governed by [`musilp94/Disertace`](https://github.com/musilp94/Disertace) and
+produced by [`musilp94/PLC-Spectrum-Sentinel`](https://github.com/musilp94/PLC-Spectrum-Sentinel).
+
+`CH1` and `CH2` are preserved dataset and host-export labels. Current evidence
+does not identify them as particular conductor pairs, physical ports, spatial
+streams, common-mode quantities or differential-mode quantities. Analyses may
+use them as dependent, potentially complementary feature views without making
+that hardware interpretation.
+
 ## License
 
 Code: MIT (see `LICENSE`). Dataset: CC BY 4.0 (see the Zenodo record).
@@ -123,4 +142,6 @@ Code: MIT (see `LICENSE`). Dataset: CC BY 4.0 (see the Zenodo record).
 ## Citation
 
 See `CITATION.cff`. Please cite the Zenodo dataset record; the associated
-article has been submitted and will be added once it is published.
+article remains unpublished after the historical 2026-07-06 submission. Add an
+article citation only after a verified future publication or resubmission record
+exists.
