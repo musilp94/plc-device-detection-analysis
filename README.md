@@ -7,9 +7,10 @@ Recognition and Topology Transfer** was accepted for publication in the IEEE
 Open Journal of the Communications Society on 31 October 2026. Acceptance is
 separate from publication; an article DOI is not assigned by this repository.
 
-For the data and exact reproduction code accompanying that article, use
-[the article-specific Zenodo release, DOI 10.5281/zenodo.22653610](https://doi.org/10.5281/zenodo.22653610).
-Download all three files from that record:
+The device-inventory analyses in the article are based on the original EcoStor dataset, available at DOI 10.5281/zenodo.20541725. The data and code accompanying the article, available at DOI 10.5281/zenodo.22653610, bring together this inventory and its retained photographs with the additional experimental data, numerical analysis inputs, result tables, analysis code and reproduction scripts. The accompanying README documents the contents and reproduction workflows.
+
+Download all three files from
+[the article's data and code record](https://doi.org/10.5281/zenodo.22653610):
 
 - `VZ6_039_021_VUT_D_v2.zip` — analytical inputs, code, results and documentation;
 - `VZ6_039_021_VUT_D_legacy-inventory_v2.zip` — native inventory and retained photographs;
