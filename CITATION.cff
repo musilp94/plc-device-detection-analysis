@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this code or dataset, please cite the Zenodo dataset record (DOI below). The associated 2026-07-06 manuscript submission was not accepted and the article remains unpublished."
+message: "This repository preserves the historical Version 1 analysis. Cite the exact source dataset, DOI 10.5281/zenodo.20541725, when reusing it. The expanded accepted article has separate archived data and code at DOI 10.5281/zenodo.22653610; see README.md."
 title: "PLC Device Detection — analysis and reproduction code"
 type: software
 authors:
@@ -16,10 +16,11 @@ license: MIT
 references:
   - type: data
     title: "Dataset of \"Power Line Communication as a Sensor: Machine Learning-Based Spectral Fingerprinting for Non-Invasive Device Detection\""
-    doi: "10.5281/zenodo.20541724"
+    doi: "10.5281/zenodo.20541725"
     year: 2026
 
-# The associated article (P. Musil, R. Macho, P. Mlýnek, J. Mišurec) was
-# submitted to the IEEE Open Journal of the Communications Society on
-# 2026-07-06, was not accepted, and remains unpublished. Add its citation only
-# after a verified future publication or resubmission record exists.
+# The historical 6 July 2026 submission was not accepted.
+# The expanded article, "Broadband Power-Line Communication as a Sensor:
+# Device Recognition and Topology Transfer", was accepted on 31 October 2026.
+# Its data and code are archived at DOI 10.5281/zenodo.22653610.
+# Acceptance does not supply final publication metadata or an article DOI.
