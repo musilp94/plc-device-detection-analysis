@@ -1,14 +1,41 @@
-# PLC Device Detection — analysis and reproduction code
+# PLC Device Detection — historical Version 1 analysis
 
-Analysis and reproduction code for the public Version 1 device/state study that
-accompanied the historical manuscript submission:
+## Data and code for the accepted article
 
-> **Power Line Communication as a Sensor: Machine Learning-Based Spectral
-> Fingerprinting for Non-Invasive Device Detection**
-> P. Musil, R. Macho, P. Mlýnek, J. Mišurec.
-> Submitted to IEEE Open Journal of the Communications Society on 2026-07-06;
-> the submission was not accepted and the article remains unpublished. An
-> extended measurement study is planned before any resubmission.
+The expanded article **Broadband Power-Line Communication as a Sensor: Device
+Recognition and Topology Transfer** was accepted for publication in the IEEE
+Open Journal of the Communications Society on 31 October 2026. Acceptance is
+separate from publication; an article DOI is not assigned by this repository.
+
+For the data and exact reproduction code accompanying that article, use
+[the article-specific Zenodo release, DOI 10.5281/zenodo.22653610](https://doi.org/10.5281/zenodo.22653610).
+Download all three files from that record:
+
+- `VZ6_039_021_VUT_D_v2.zip` — analytical inputs, code, results and documentation;
+- `VZ6_039_021_VUT_D_legacy-inventory_v2.zip` — native inventory and retained photographs;
+- `ReadMeFile_v2.txt` — the authoritative delivery guide and checksum clarifications.
+
+Extract both ZIP files into the same destination and follow the standalone
+README, then each analytical component's instructions. This release contains
+the historical analyses and the later controlled measurement and validation
+components. Its scope is documented analytical inputs and reproduction code;
+some original operational logs and private identity mappings are retained
+separately.
+
+The [original EcoStor inventory, DOI 10.5281/zenodo.20541725](https://doi.org/10.5281/zenodo.20541725),
+is a separate source dataset. The `v2` delivery label does not make the
+article-specific record a new version in the original record's Zenodo version
+series.
+
+## Scope of this repository
+
+This repository preserves the analysis and reproduction code for the historical
+Version 1 device/state study, **Power Line Communication as a Sensor: Machine
+Learning-Based Spectral Fingerprinting for Non-Invasive Device Detection**,
+associated with the 6 July 2026 manuscript submission. That submission was not
+accepted. The later accepted article has the expanded scope and archived code
+linked above. The historical numerical code and result files in this repository
+are retained for reproducibility.
 
 The study investigates whether the noise spectrum a broadband power line
 communication (BB-PLC) modem already measures as part of its normal channel
@@ -29,8 +56,9 @@ The measurement dataset is published separately on Zenodo (CC BY 4.0):
 
 It contains the noise spectra of 75 device configurations (38 physical devices
 in various operating states) plus one empty-grid baseline, recorded over a live
-230 V / 50 Hz grid in three cable configurations, 20 repetitions each, on two
-MIMO channels, over the 1.8–80 MHz band.
+230 V / 50 Hz grid in three cable configurations, 20 repetitions each, on two dependent
+host-export views (CH1 and CH2), over the 1.8–80 MHz band. There are 9,120
+spectrum CSV files and two additional CSV files.
 
 ## Setup
 
@@ -39,8 +67,11 @@ python -m venv .venv && source .venv/bin/activate   # or your environment of cho
 pip install -r requirements.txt
 ```
 
-Download the dataset archive from Zenodo and lay it out as follows (the scripts
-read the archive directly and also expect the companion CSVs alongside it):
+For this historical pipeline, download `VZ6_039_021_VUT_D_v1.zip` from the
+original Zenodo record. Save a local copy under the historical filename
+`VZ6_039_021_VUT_D_0000_v1.zip` expected below; this changes only the local
+filename, not the archive contents. The scripts read the archive directly and
+also expect the companion CSVs alongside it:
 
 ```
 dataset/
@@ -123,11 +154,11 @@ figures/             generated figures (created on demand)
 
 ## Repository role and interpretation boundary
 
-This repository is the reproduction authority for the released Version 1
-dataset and its reported estimands. It is not the source of truth for the later
-PC, adapter, router, channel-sounding or measurement-chain campaigns; those are
-governed by [`musilp94/Disertace`](https://github.com/musilp94/Disertace) and
-produced by [`musilp94/PLC-Spectrum-Sentinel`](https://github.com/musilp94/PLC-Spectrum-Sentinel).
+This repository reproduces the historical Version 1 analyses and their stated
+evaluation targets. For the later experiments and the accepted article, the
+reproduction entry point is the archived data and code at
+[DOI 10.5281/zenodo.22653610](https://doi.org/10.5281/zenodo.22653610).
+Access to the authors' private working repositories is not required.
 
 `CH1` and `CH2` are preserved dataset and host-export labels. Current evidence
 does not identify them as particular conductor pairs, physical ports, spatial
@@ -141,7 +172,9 @@ Code: MIT (see `LICENSE`). Dataset: CC BY 4.0 (see the Zenodo record).
 
 ## Citation
 
-See `CITATION.cff`. Please cite the Zenodo dataset record; the associated
-article remains unpublished after the historical 2026-07-06 submission. Add an
-article citation only after a verified future publication or resubmission record
-exists.
+See `CITATION.cff`. When reusing this historical code or source inventory, cite
+the exact original dataset release, DOI 10.5281/zenodo.20541725. When reusing
+the expanded article's data or code, cite DOI 10.5281/zenodo.22653610 as well
+as the original inventory where applicable. Cite the associated article for
+its methods and interpretation once its publication details are available.
+The software, dataset and article are distinct citation objects.
